@@ -15,12 +15,12 @@ public class PersonRepository {
     }
 
     public List<Person> getList(){
-        Statement statement = null;
-        ResultSet results = null;
 
-        try {
-            statement = this.connection.createStatement();
-            results = statement.executeQuery("SELECT * From " + TableNames.TABLE_PEOPLE);
+        try(
+            Statement statement = this.connection.createStatement();
+            ResultSet results = statement.executeQuery("SELECT * From " + TableNames.TABLE_PEOPLE)
+        )
+        {
             List<Person> People = new ArrayList<>();
 
             while (results.next()) {
@@ -35,21 +35,6 @@ public class PersonRepository {
         } catch (SQLException e) {
             System.out.println("Error in Execute Query " + e.getMessage());
             return null;
-        } finally {
-            try {
-                if (results != null) {
-                    results.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            try {
-                if (statement != null) {
-                    statement.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 }
