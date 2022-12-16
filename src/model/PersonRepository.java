@@ -37,4 +37,22 @@ public class PersonRepository {
             return null;
         }
     }
+
+    public Person GetPersonById(int personId) {
+        try (Statement statement = connection.createStatement();
+             ResultSet results = statement.executeQuery("SELECT * From " + TableNames.TABLE_PEOPLE + " WHERE "
+                     + TableNames.TABLE_PEOPLE +"."+ TableNames.COLUMN_PEOPLE_ID + " = " + personId)) {
+
+            Person person = new Person();
+            person.setId(results.getInt(TableNames.COLUMN_PEOPLE_ID));
+            person.setName(results.getString(TableNames.COLUMN_PEOPLE_NAME));
+            person.setFamily(results.getString(TableNames.COLUMN_PEOPLE_FAMILY));
+
+            return person;
+
+        } catch (SQLException e) {
+            System.out.println("Error in Execute Query " + e.getMessage());
+            return null;
+        }
+    }
 }
